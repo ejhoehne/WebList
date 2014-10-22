@@ -8,8 +8,9 @@
 
 #import "WLDetailViewController.h"
 
-@interface WLDetailViewController ()
+@interface WLDetailViewController () <UIWebViewDelegate>
 - (void)configureView;
+@property (strong, nonatomic) IBOutlet UIWebView *webView;
 @end
 
 @implementation WLDetailViewController
@@ -39,7 +40,14 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    self.webView.delegate = self;
     [self configureView];
+    
+    NSURL *url = [NSURL URLWithString:self.detailItem];
+    
+    [self.webView loadRequest:[NSURLRequest requestWithURL:url]];
+        
 }
 
 - (void)didReceiveMemoryWarning
