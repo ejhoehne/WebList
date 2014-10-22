@@ -18,7 +18,7 @@
 }
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, strong) UISearchDisplayController * searchController;
-@property(nonatomic, strong) NSString *url;
+@property (strong, nonatomic) NSString *selectedUrl;
 @end
 
 
@@ -110,6 +110,18 @@
     // Return NO if you do not want the specified item to be editable.
     return YES;
 }
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (tableView == self.tableView) {
+        self.selectedUrl = _objects[indexPath.row];
+    } else {
+        self.selectedUrl = _filteredObjects[indexPath.row];
+
+    }
+    [self performSegueWithIdentifier:@"detailSegue" sender:self];
+
+}
+
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -139,9 +151,9 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([[segue identifier] isEqualToString:@"showDetail"]) {
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        [[segue destinationViewController] setDetailItem:_objects[indexPath.row]];
+    if ([[segue identifier] isEqualToString:@"detailSegue"]) {
+        //NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        [[segue destinationViewController] setDetailItem:self.selectedUrl];
     }
 }
 
